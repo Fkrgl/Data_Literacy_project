@@ -43,7 +43,6 @@ def print_linear_regression_performance(reg, X_train, X_test, y_train, y_test):
     # cross validation
     model = LinearRegression()
     scorer = make_scorer(get_root_mean_squared_error)
-    cv = KFold(n_splits=5, shuffle=True)
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
     scores = cross_val_score(model, X_train, y_train, cv=cv, scoring=scorer)
     print(f'mean cross validation error: {scores.mean()}')
@@ -57,7 +56,7 @@ def print_linear_regression_performance(reg, X_train, X_test, y_train, y_test):
 
 
 def print_log_regression_performance(clf, X_train, X_test, y_train, y_test):
-    print(f'trainings score: {clf.score(X_train, y_train)}')
+    print(f'training score: {clf.score(X_train, y_train)}')
     print(f'test score: {clf.score(X_test, y_test)}')
     # cross validation
     model = LogisticRegression()
@@ -69,10 +68,30 @@ def print_log_regression_performance(clf, X_train, X_test, y_train, y_test):
 
 
 def train_linear_regression_model(X_train, y_train):
-    # perform linear regerssion and evaluate
     # perform linear regression and evaluate
     reg = LinearRegression().fit(X_train, y_train)
     return reg
+
+
+def train_logistic_regression_model(X_train, y_train):
+    clf = LogisticRegression().fit(X_train, y_train)
+    return clf
+
+
+def get_logistic_regression_data_sets(y, trainings_data):
+    """
+    binaryzes popularity by setting all values above 50 to one, all other to zero. Next, a split of the data in test and
+    trainings set is performed.
+    :param y: labels
+    :param trainings_data: data
+    :return: trainings and test data sets
+    """
+    y_logistic = np.zeros(len(y))
+    y_logistic[y > 50] = 1
+    # split data into test and trainings set
+    X_train, X_test, y_train, y_test = train_test_split(trainings_data, y_logistic, test_size=0.33,
+                                                        random_state=42)
+    return X_train, X_test, y_train, y_test
 
 
 def create_four_feature_data_set(training_data):
@@ -90,27 +109,26 @@ def predictions_to_file(X, y, model, filename):
 # ---------------------------------------------------- MAIN ---------------------------------------------------------- #
 def main():
     # read in data
-    trainings_data = pd.read_csv('../dat/trainings_data.csv')
-    trainings_data = pd.read_csv('../dat/training_data.csv')
+    training_data = pd.read_csv('../dat/training_data.csv')
     y = pd.read_csv('../dat/response.csv').values[:, 0]
 
     # linear regression
     print('\nlinear regression:')
-    X_train, X_test, y_train, y_test = train_test_split(trainings_data, y, test_size=0.33, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(training_data, y, test_size=0.33, random_state=42)
     reg = train_linear_regression_model(X_train, y_train)
     print_linear_regression_performance(reg, X_train, X_test, y_train, y_test)
     predictions_to_file(X_test, y_test, reg, 'predictions_regression.csv')
 
     # logistic regression
     print('\nlogistic regression:')
-    X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, trainings_data)
+    X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data)
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
     predictions_to_file(X_test, y_test, log_reg, 'predictions_log_regression.csv')
 
     # logistic regression on four features
     print('\nlogistic regression on four most informative features:')
-    training_data_four_params = create_four_feature_data_set(trainings_data)
+    training_data_four_params = create_four_feature_data_set(training_data)
     X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data_four_params)
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
