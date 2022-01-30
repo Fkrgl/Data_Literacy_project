@@ -45,19 +45,15 @@ def print_linear_regression_performance(reg, X_train, X_test, y_train, y_test):
     scorer = make_scorer(get_root_mean_squared_error)
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
     scores = cross_val_score(model, X_train, y_train, cv=cv, scoring=scorer)
-    print(f'mean cross validation error: {scores.mean()}')
     print(f'mean cross validation error (RMSE): {scores.mean():.2f}')
 
     # get test error
     predictions_training = reg.predict(X_test)
-    print(f'test error: {np.sqrt(mean_squared_error(y_test, predictions_training))}')
     predictions_test = reg.predict(X_test)
     print(f'test error (RMSE): {mean_squared_error(y_test, predictions_test, squared=False):.2f}')
 
 
 def print_log_regression_performance(clf, X_train, X_test, y_train, y_test):
-    print(f'training score: {clf.score(X_train, y_train)}')
-    print(f'test score: {clf.score(X_test, y_test)}')
     # cross validation
     model = LogisticRegression()
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
