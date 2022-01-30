@@ -39,6 +39,7 @@ def main():
     # duration in ms --> duration in s
     training_data['duration (s)'] = training_data['duration_ms'] / 1000
     training_data.drop('duration_ms', axis=1, inplace=True)
+    training_data.to_csv("../dat/histogram_data.csv", index=None)
 
     # melt in order to use ggplot2
     plot_data = pd.melt(training_data, id_vars='dataset')
