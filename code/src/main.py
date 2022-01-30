@@ -46,7 +46,7 @@ def main():
     # ======== Data preprocessing ======== #
     print("=== Preprocessing Data ===")
     # Sample kaggle data and write to .csv
-    #sample_kaggle_data.main()
+    sample_kaggle_data.main()
     # Create training data
     create_training_data.main()
     print("DONE\n")
