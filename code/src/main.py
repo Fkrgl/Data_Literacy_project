@@ -15,6 +15,7 @@ import download_spotify_data
 import download_kaggle_data
 import sample_kaggle_data
 import create_training_data
+import fig_tSNE
 import fig_density_hist
 import regression_models
 
@@ -52,6 +53,11 @@ def main():
     # ========= Analysis of data distribution ========= #
     print("=== Analysing data distribution ===")
     fig_density_hist.main()
+    print("DONE\n")
+
+    # ======== Dimension reduction using tSNE ======== #
+    print("=== Analysing data using dimension reduction ===")
+    fig_tSNE.main()
     print("DONE\n")
 
     # ======== Apply regression models to predict popularity ======== #
