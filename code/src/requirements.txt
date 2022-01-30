@@ -1,0 +1,6 @@
+pandas~=1.2.4
+numpy~=1.19.5
+scikit-learn~=1.0.1
+spotipy~=2.19.0
+tqdm~=4.61.2
+dropbox~=11.26.0

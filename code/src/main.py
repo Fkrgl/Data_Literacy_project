@@ -9,13 +9,13 @@ Main script.
 # --------------------------------------------------- IMPORTS -------------------------------------------------------- #
 # Packages
 import os
-import pandas as pd
 
 # Scripts
 import download_spotify_data
 import download_kaggle_data
 import sample_kaggle_data
 import create_training_data
+import fig_density_hist
 import regression_models
 
 
@@ -44,14 +44,21 @@ def main():
     # ======== Data preprocessing ======== #
     print("=== Preprocessing Data ===")
     # Sample kaggle data and write to .csv
-    sample_kaggle_data.main()
+    #sample_kaggle_data.main()
     # Create training data
     create_training_data.main()
-    print("DONE")
+    print("DONE\n")
+
+    # ========= Analysis of data distribution ========= #
+    print("=== Analysing data distribution ===")
+    fig_density_hist.main()
+    print("DONE\n")
 
     # ======== Apply regression models to predict popularity ======== #
-    print("=== Applying ML model to predict popularity ===")
+    print("=== Applying ML models to predict popularity ===")
     regression_models.main()
+    print("DONE\n")
+
 
 if __name__ == "__main__":
     main()

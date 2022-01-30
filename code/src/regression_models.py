@@ -57,7 +57,7 @@ def print_linear_regression_performance(reg, X_train, X_test, y_train, y_test):
 
 
 def print_log_regression_performance(clf, X_train, X_test, y_train, y_test):
-    print(f'trainings score: {clf.score(X_train, y_train)}')
+    print(f'training score: {clf.score(X_train, y_train)}')
     print(f'test score: {clf.score(X_test, y_test)}')
 
 
@@ -72,18 +72,18 @@ def train_logistic_regression_model(X_train, y_train):
     return clf
 
 
-def get_logistic_regression_data_sets(y, trainings_data):
+def get_logistic_regression_data_sets(y, training_data):
     """
     binaryzes popularity by setting all values above 50 to one, all other to zero. Next, a split of the data in test and
-    trainings set is performed.
+    training set is performed.
     :param y: labels
-    :param trainings_data: data
-    :return: trainings and test data sets
+    :param training_data: data
+    :return: training and test data sets
     """
     y_logistic = np.zeros(len(y))
     y_logistic[y > 50] = 1
-    # split data into test and trainings set
-    X_train, X_test, y_train, y_test = train_test_split(trainings_data, y_logistic, test_size=0.33,
+    # split data into test and training set
+    X_train, X_test, y_train, y_test = train_test_split(training_data, y_logistic, test_size=0.33,
                                                         random_state=42)
     return X_train, X_test, y_train, y_test
 
@@ -99,24 +99,24 @@ def create_four_fearure_data_set(training_data):
 # ---------------------------------------------------- MAIN ---------------------------------------------------------- #
 def main():
     # read in data
-    trainings_data = pd.read_csv('../dat/trainings_data.csv')
+    training_data = pd.read_csv('../dat/training_data.csv')
     y = pd.read_csv('../dat/response.csv').values[:, 0]
 
     # linear regression
     print('\nlinear regression:')
-    X_train, X_test, y_train, y_test = train_test_split(trainings_data, y, test_size=0.33, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(training_data, y, test_size=0.33, random_state=42)
     reg = train_linear_regression_model(X_train, y_train)
     print_linear_regression_performance(reg, X_train, X_test, y_train, y_test)
 
     # logistic regression
     print('\nlogistic regression:')
-    X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, trainings_data)
+    X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data)
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
 
     # logistic regression on four features
     print('\nlogistic regression on four most informative features:')
-    training_data_four_params = create_four_fearure_data_set(trainings_data)
+    training_data_four_params = create_four_fearure_data_set(training_data)
     X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data_four_params)
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
