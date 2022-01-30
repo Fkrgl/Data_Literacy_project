@@ -1,7 +1,12 @@
-'''
-this script performs linear and logistic regression on pre-selected song features to predict the popularity of a song
-'''
+"""
+Data Literacy - WiSe 21
+Project: Assessment of Spotify Chart Preferences across Different Countries
+Authors: Florian Kriegel (5746680), Jonathan Waehrer (5776535)
 
+Purpose of this script performs linear and logistic regression on pre-selected song features to predict the popularity
+of a song.
+"""
+# --------------------------------------------------- PACKAGES ------------------------------------------------------- #
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -10,19 +15,34 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import make_scorer
 from sklearn.linear_model import LogisticRegression
 
+
+# ---------------------------------------------- FUNCTIONS/UTILITY --------------------------------------------------- #
 def get_root_mean_squared_error(predictions, labels):
-    rsme = 0
+    rmse = 0
     for pred, label in zip(predictions, labels):
-        rsme += (label - pred)**2
-    return np.sqrt(1/len(predictions) * rsme)
+        rmse += (label - pred) ** 2
+    return np.sqrt(1 / len(predictions) * rmse)
+
 
 def print_linear_regression_performance(reg, X_train, X_test, y_train, y_test):
-    '''
-    prints the trainings, CV and test RSME for a trained linear regression model
-    '''
+    """
+    Prints training, CV and test RMSE for a trained linear regression model.
+
+    Parameters
+    ----------
+    reg
+    X_train
+    X_test
+    y_train
+    y_test
+
+    Returns
+    -------
+
+    """
     predictions = reg.predict(X_train)
-    rsme_normal = np.sqrt(mean_squared_error(y_train, predictions))
-    print(f'train error: {rsme_normal}')
+    rmse = np.sqrt(mean_squared_error(y_train, predictions))
+    print(f'train error: {rmse}')
 
     # cross validation
     model = LinearRegression()
@@ -35,23 +55,27 @@ def print_linear_regression_performance(reg, X_train, X_test, y_train, y_test):
     predictions_training = reg.predict(X_test)
     print(f'test error: {np.sqrt(mean_squared_error(y_test, predictions_training))}')
 
+
 def print_log_regression_performance(clf, X_train, X_test, y_train, y_test):
     print(f'trainings score: {clf.score(X_train, y_train)}')
     print(f'test score: {clf.score(X_test, y_test)}')
+
 
 def train_linear_regression_model(X_train, y_train):
     # perform linear regerssion and evaluate
     reg = LinearRegression().fit(X_train, y_train)
     return reg
 
+
 def train_logistic_regression_model(X_train, y_train):
     clf = LogisticRegression().fit(X_train, y_train)
     return clf
 
+
 def get_logistic_regression_data_sets(y, trainings_data):
     """
-    binaryizes popularity by setting all values above 50 to one, all other to zero. The a split of the data in test and
-    trainings set is perfomred
+    binaryzes popularity by setting all values above 50 to one, all other to zero. Next, a split of the data in test and
+    trainings set is performed.
     :param y: labels
     :param trainings_data: data
     :return: trainings and test data sets
@@ -63,18 +87,20 @@ def get_logistic_regression_data_sets(y, trainings_data):
                                                         random_state=42)
     return X_train, X_test, y_train, y_test
 
+
 def create_four_fearure_data_set(training_data):
     """
-    extracts the four most informative features from data and creats new training set with it
+    extracts the four most informative features from data and creates new training set with it
     """
-
     training_data_four_params = training_data[['danceability', 'energy', 'valence', 'loudness']]
     return training_data_four_params
 
+
+# ---------------------------------------------------- MAIN ---------------------------------------------------------- #
 def main():
     # read in data
     trainings_data = pd.read_csv('../dat/trainings_data.csv')
-    y = pd.read_csv('../dat/labels.csv').values[:,0]
+    y = pd.read_csv('../dat/response.csv').values[:, 0]
 
     # linear regression
     print('\nlinear regression:')
@@ -88,7 +114,7 @@ def main():
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
 
-    # logistic regression on four feature
+    # logistic regression on four features
     print('\nlogistic regression on four most informative features:')
     training_data_four_params = create_four_fearure_data_set(trainings_data)
     X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data_four_params)
@@ -96,4 +122,5 @@ def main():
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
 
 
-main()
+if __name__ == "__main__":
+    main()
