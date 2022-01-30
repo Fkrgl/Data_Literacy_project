@@ -113,18 +113,23 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(training_data, y, test_size=0.33, random_state=42)
     reg = train_linear_regression_model(X_train, y_train)
     print_linear_regression_performance(reg, X_train, X_test, y_train, y_test)
-    predictions_to_file(X_test, y_test, reg, 'predictions_regression.csv')
+
+    # linear regression on four features
+    print('\nlinear regression on four parameters:')
+    training_data_four_params = create_four_feature_data_set(training_data)
+    X_train, X_test, y_train, y_test = train_test_split(training_data_four_params, y, test_size=0.33, random_state=42)
+    reg = train_linear_regression_model(X_train, y_train)
+    print_linear_regression_performance(reg, X_train, X_test, y_train, y_test)
+    predictions_to_file(X_test, y_test, reg, 'predictions_regression_four_features.csv')
 
     # logistic regression
     print('\nlogistic regression:')
     X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data)
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
-    predictions_to_file(X_test, y_test, log_reg, 'predictions_log_regression.csv')
 
     # logistic regression on four features
     print('\nlogistic regression on four most informative features:')
-    training_data_four_params = create_four_feature_data_set(training_data)
     X_train, X_test, y_train, y_test = get_logistic_regression_data_sets(y, training_data_four_params)
     log_reg = train_logistic_regression_model(X_train, y_train)
     print_log_regression_performance(log_reg, X_train, X_test, y_train, y_test)
