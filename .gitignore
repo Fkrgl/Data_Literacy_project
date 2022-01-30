@@ -1,3 +1,5 @@
 code/dat/kaggle_data.csv 
+code/src/__pycache__/
+.ipynb_checkpoints/
 venv/
 .idea

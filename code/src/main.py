@@ -18,6 +18,7 @@ import create_training_data
 import fig_tSNE
 import fig_density_hist
 import regression_models
+import fig_regression_results
 
 
 # ---------------------------------------------------- MAIN ---------------------------------------------------------- #
@@ -63,6 +64,11 @@ def main():
     # ======== Apply regression models to predict popularity ======== #
     print("=== Applying ML models to predict popularity ===")
     regression_models.main()
+    print("DONE\n")
+
+    # ======== Plot regression results ======== #
+    print("=== Creating plots for regression results ===")
+    fig_regression_results.main()
     print("DONE\n")
 
 
